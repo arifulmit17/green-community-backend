@@ -11,3 +11,125 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+
+model User {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  password    String
+  role        Role     @default(MEMBER)
+
+  ideas       Idea[]
+  comments    Comment[]
+  votes       Vote[]
+  purchases   Purchase[]
+
+  createdAt   DateTime @default(now())
+
+  
+}
+
+enum Role {
+  MEMBER
+  ADMIN
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+
+  ideas     Idea[]
+}
+
+
+model Idea {
+  id              String        @id @default(cuid())
+  title           String
+  problem         String
+  solution        String
+  description     String
+  image           String?
+
+  isPaid          Boolean       @default(false)
+  price           Float?
+
+  status          IdeaStatus    @default(UNDER_REVIEW)
+
+  authorId        String
+  author          User          @relation(fields: [authorId], references: [id])
+
+  categoryId      String
+  category        Category      @relation(fields: [categoryId], references: [id])
+
+  comments        Comment[]
+  votes           Vote[]
+  purchases       Purchase[]
+
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([title])
+  @@index([categoryId])
+}
+
+
+enum IdeaStatus {
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  DRAFT
+}
+
+enum VoteType {
+  UP
+  DOWN
+}
+
+
+model Vote {
+  id        String   @id @default(cuid())
+
+  userId    String
+  ideaId    String
+
+  type      VoteType
+
+  user      User     @relation(fields: [userId], references: [id])
+  idea      Idea     @relation(fields: [ideaId], references: [id])
+
+  @@unique([userId, ideaId]) // prevents multiple votes
+}
+
+model Comment {
+  id          String     @id @default(cuid())
+  content     String
+
+  userId      String
+  ideaId      String
+
+  parentId    String?    // for nested comments
+
+  user        User       @relation(fields: [userId], references: [id])
+  idea        Idea       @relation(fields: [ideaId], references: [id])
+
+  parent      Comment?   @relation("CommentReplies", fields: [parentId], references: [id])
+  replies     Comment[]  @relation("CommentReplies")
+
+  createdAt   DateTime   @default(now())
+}
+
+model Purchase {
+  id        String   @id @default(cuid())
+
+  userId    String
+  ideaId    String
+
+  user      User     @relation(fields: [userId], references: [id])
+  idea      Idea     @relation(fields: [ideaId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, ideaId]) // user buys once
+}
