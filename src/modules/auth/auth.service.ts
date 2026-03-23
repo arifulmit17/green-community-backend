@@ -45,7 +45,7 @@ const loginUserAuth=async (payload:any)=>{
         email:user.email,
         role:user.role,
     }
-    const token=jwt.sign(userData,secret,{expiresIn:"3d"})
+    const token=jwt.sign(userData,secret,{expiresIn:"7d"})
 
     return {
         token,
