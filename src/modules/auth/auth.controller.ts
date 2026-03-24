@@ -1,0 +1,50 @@
+
+import type { Request, Response } from "express";
+import { AuthService } from "./auth.service";
+
+
+const registerUser = async (req: Request, res: Response) => {
+  try {
+    const result = await AuthService.createUserAuth(req.body);
+
+    // remove password from response
+    const { password, ...userWithoutPassword } = result;
+
+    res.status(201).json({
+      success: true,
+      message: "User registered successfully",
+      data: userWithoutPassword,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: "User registration failed",
+      error: error.message,
+    });
+  }
+};
+
+const loginUser = async (req: Request, res: Response) => {
+  try {
+    const result = await AuthService.loginUserAuth(req.body);
+
+    const { password, ...userWithoutPassword } = result.user;
+
+    res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token: result.token,
+      data: userWithoutPassword,
+    });
+  } catch (error: any) {
+    res.status(401).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const AuthController = {
+  registerUser,
+  loginUser,
+};
