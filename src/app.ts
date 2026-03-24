@@ -4,6 +4,7 @@ import { userRoutes } from "./modules/user/user.router";
 import { ideaRoutes } from "./modules/idea/idea.router";
 import { categoryRoutes } from "./modules/category/category.router";
 import { authMiddleware } from './middlewares/authMiddleware';
+import { voteRoutes } from "./modules/vote/vote.router";
 
 const app=express();
 app.use(express.json())
@@ -13,8 +14,9 @@ app.get("/",(req:Request,res:Response)=>{
 
 })
 
-app.use("/api",authRoutes)
-app.use("/api",authMiddleware,userRoutes)
-app.use("/api",ideaRoutes)
+app.use("/api/auth",authRoutes)
+app.use("/api/users",authMiddleware,userRoutes)
+app.use("/api/idea",ideaRoutes)
 app.use("/api/categories",authMiddleware,categoryRoutes)
+app.use("/api/votes",voteRoutes)
 export default app;

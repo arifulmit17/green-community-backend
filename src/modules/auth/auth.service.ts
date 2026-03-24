@@ -9,7 +9,7 @@ const secret="ssdfsfsdfsdfsfsfsdfgswrwer"
 const  createUserAuth= async(payload:any)=>{
     
     const {password}=payload
-     console.log(payload);
+     console.log("Payload:",payload);
     const hashedPass=await bcrypt.hash(password, 8);
     const result=await prisma.user.create({
         data:{

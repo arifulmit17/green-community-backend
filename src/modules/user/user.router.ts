@@ -9,9 +9,9 @@ import {
 const router = express.Router();
 
 
-router.get("/users/:id", getUserById);
-router.get("/users", getAllUsers);
-router.patch("/users/:id", updateUser);
-router.delete("/users/:id", deleteUser);
+router.get("/:id", getUserById);
+router.get("/", getAllUsers);
+router.patch("/:id", updateUser);
+router.delete("/:id", deleteUser);
 
 export const userRoutes = router;

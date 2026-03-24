@@ -5,7 +5,7 @@ import { ideaService } from "./idea.service";
 // CREATE IDEA
 const createIdea = async (req: Request, res: Response) => {
   try {
-    console.log(req.user?.id);
+    console.log("User ID:", req.user?.id);
     const result = await ideaService.createIdea(req.body,req.user?.id as string);
 
     res.status(201).json({
@@ -24,6 +24,7 @@ const createIdea = async (req: Request, res: Response) => {
 
 const getAllIdeas = async (req: Request, res: Response) => {
   try {
+    console.log("req come");
     const result = await ideaService.getAllIdeas(req.query);
 
     res.status(200).json({
