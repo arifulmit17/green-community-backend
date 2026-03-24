@@ -3,6 +3,7 @@ import { prisma } from "../../lib/prisma";
 
 // CREATE IDEA
 const createIdea = async (payload: any,userId:string) => {
+    console.log(userId);
   const idea = await prisma.idea.create({
     data: {
       ...payload,

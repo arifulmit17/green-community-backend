@@ -9,14 +9,16 @@ export const authMiddleware = (
 ) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
+    console.log(token);
 
     if (!token) {
       throw new Error("Unauthorized");
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
-
+      
     req.user = decoded;
+    console.log(req.user);
 
     next();
   } catch (error) {

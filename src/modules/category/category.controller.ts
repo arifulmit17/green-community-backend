@@ -100,3 +100,11 @@ const deleteCategory = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const categoryController = {
+  createCategory,
+  getAllCategories,
+  getCategoryById,
+  updateCategory,
+  deleteCategory,
+};
