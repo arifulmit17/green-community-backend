@@ -2,9 +2,12 @@ import { prisma } from "../../lib/prisma";
 
 
 // CREATE IDEA
-const createIdea = async (payload: any) => {
+const createIdea = async (payload: any,userId:string) => {
   const idea = await prisma.idea.create({
-    data: payload,
+    data: {
+      ...payload,
+      authorId: userId,
+    },
   });
 
   return idea;

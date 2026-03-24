@@ -3,16 +3,16 @@ import { ideaController } from "./idea.controller";
 
 const router = express.Router();
 
-router.post("/", ideaController.createIdea);
+router.post("/idea", ideaController.createIdea);
 
-router.get("/", ideaController.getAllIdeas);
+router.get("/idea", ideaController.getAllIdeas);
 
-router.get("/:id", ideaController.getIdeaById);
+router.get("/idea/:id", ideaController.getIdeaById);
 
-router.patch("/:id", ideaController.updateIdea);
+router.patch("/idea/:id", ideaController.updateIdea);
 
-router.delete("/:id", ideaController.deleteIdea);
+router.delete("/idea/:id", ideaController.deleteIdea);
 
-router.patch("/:id/status", ideaController.updateIdeaStatus);
+router.patch("/idea/:id/status", ideaController.updateIdeaStatus);
 
 export const ideaRoutes = router;

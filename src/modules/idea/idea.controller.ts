@@ -5,7 +5,7 @@ import { ideaService } from "./idea.service";
 // CREATE IDEA
 const createIdea = async (req: Request, res: Response) => {
   try {
-    const result = await ideaService.createIdea(req.body);
+    const result = await ideaService.createIdea(req.body,req.user?.id as string);
 
     res.status(201).json({
       success: true,
