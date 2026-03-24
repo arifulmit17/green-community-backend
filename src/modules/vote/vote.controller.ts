@@ -34,8 +34,9 @@ const voteIdea = async (req: Request, res: Response) => {
 const removeVote = async (req: Request, res: Response) => {
   try {
     const userId = req.user?.id;
+    console.log(userId);
     const { ideaId } = req.params;
-
+    console.log(req.params);
     if (!userId) {
       return res.status(401).json({
         success: false,
