@@ -5,6 +5,7 @@ import { ideaRoutes } from "./modules/idea/idea.router";
 import { categoryRoutes } from "./modules/category/category.router";
 import { authMiddleware } from './middlewares/authMiddleware';
 import { voteRoutes } from "./modules/vote/vote.router";
+import { feedbackRoutes } from "./modules/feedback/feedback.router";
 
 const app=express();
 app.use(express.json())
@@ -19,4 +20,5 @@ app.use("/api/users",authMiddleware,userRoutes)
 app.use("/api/idea",ideaRoutes)
 app.use("/api/categories",authMiddleware,categoryRoutes)
 app.use("/api/votes",voteRoutes)
+app.use("/api/feedback", feedbackRoutes);
 export default app;
