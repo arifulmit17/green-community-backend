@@ -1,4 +1,5 @@
 import express, { type Request, type Response } from "express"
+import cors from "cors"
 import { authRoutes } from "./modules/auth/auth.router";
 import { userRoutes } from "./modules/user/user.router";
 import { ideaRoutes } from "./modules/idea/idea.router";
@@ -8,6 +9,13 @@ import { voteRoutes } from "./modules/vote/vote.router";
 import { feedbackRoutes } from "./modules/feedback/feedback.router";
 
 const app=express();
+
+app.use(
+  cors({
+    origin: "http://localhost:4000",
+    credentials: true, // important if using cookies
+  })
+)
 app.use(express.json())
 
 app.get("/",(req:Request,res:Response)=>{

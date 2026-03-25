@@ -44,7 +44,24 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
+export const getMe = async (req: any, res: any) => {
+  try {
+    const user = req.user; // from middleware
+
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
+  } catch (error: any) {
+    res.status(401).json({
+      success: false,
+      message: "Unauthorized",
+    });
+  }
+};
+
 export const AuthController = {
   registerUser,
   loginUser,
+  getMe,
 };

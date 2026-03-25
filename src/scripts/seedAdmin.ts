@@ -26,7 +26,7 @@ async function seedAdmin() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                // origin:"http://localhost:4000"
+                origin:"http://localhost:4000"
                 // origin:"https://skillbridge-frontend-bay.vercel.app/"
             },
             body: JSON.stringify(adminData)
