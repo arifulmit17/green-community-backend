@@ -8,12 +8,14 @@ const registerUser = async (req: Request, res: Response) => {
     const result = await AuthService.createUserAuth(req.body);
 
     // remove password from response
-    const { password, ...userWithoutPassword } = result;
+    
 
     res.status(201).json({
       success: true,
       message: "User registered successfully",
-      data: userWithoutPassword,
+      token: result.token,
+      data: result.user,
+      
     });
   } catch (error: any) {
     res.status(400).json({
