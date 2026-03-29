@@ -1,6 +1,7 @@
 import express from "express";
 import { categoryController } from "./category.controller";
 import { adminMiddleware } from "../../middlewares/adminMiddleware";
+import { authMiddleware } from "../../middlewares/authMiddleware";
 
 const router = express.Router();
 
@@ -11,12 +12,12 @@ router.post("/",adminMiddleware, categoryController.createCategory);
 router.get("/", categoryController.getAllCategories);
 
 // GET SINGLE
-router.get("/:id", categoryController.getCategoryById);
+router.get("/:id",authMiddleware, categoryController.getCategoryById);
 
 // UPDATE
-router.patch("/:id", categoryController.updateCategory);
+router.patch("/:id",adminMiddleware, categoryController.updateCategory);
 
 // DELETE
-router.delete("/:id", categoryController.deleteCategory);
+router.delete("/:id",adminMiddleware, categoryController.deleteCategory);
 
 export const categoryRoutes = router;

@@ -25,11 +25,23 @@ const getAllIdeas = async (query: any) => {
               OR: [
                 { title: { contains: search, mode: "insensitive" } },
                 { description: { contains: search, mode: "insensitive" } },
+
+                // 🌿 NEW: search by category name
+                {
+                  category: {
+                    name: {
+                      contains: search,
+                      mode: "insensitive",
+                    },
+                  },
+                },
               ],
             }
           : {},
 
+        // 🌿 Filter by selected category
         categoryId ? { categoryId } : {},
+
         status ? { status } : {},
       ],
     },

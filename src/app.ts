@@ -26,7 +26,7 @@ app.get("/",(req:Request,res:Response)=>{
 app.use("/api/auth",authRoutes)
 app.use("/api/users",authMiddleware,userRoutes)
 app.use("/api/idea",ideaRoutes)
-app.use("/api/categories",authMiddleware,categoryRoutes)
+app.use("/api/categories",categoryRoutes)
 app.use("/api/votes",voteRoutes)
 app.use("/api/feedback", feedbackRoutes);
 export default app;
