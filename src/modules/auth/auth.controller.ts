@@ -31,7 +31,12 @@ const loginUser = async (req: Request, res: Response) => {
     const result = await AuthService.loginUserAuth(req.body);
 
     const { password, ...userWithoutPassword } = result.user;
-
+    
+    res.cookie("token", result.token, {
+  httpOnly: true,
+  secure: false, // true in production (https)
+  sameSite: "lax",
+})
     res.status(200).json({
       success: true,
       message: "Login successful",

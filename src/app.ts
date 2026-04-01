@@ -7,6 +7,8 @@ import { categoryRoutes } from "./modules/category/category.router";
 import { authMiddleware } from './middlewares/authMiddleware';
 import { voteRoutes } from "./modules/vote/vote.router";
 import { feedbackRoutes } from "./modules/feedback/feedback.router";
+import cookieParser from "cookie-parser"
+
 
 const app=express();
 
@@ -16,12 +18,16 @@ app.use(
     credentials: true, // important if using cookies
   })
 )
+
+app.use(cookieParser())
+
 app.use(express.json())
 
 app.get("/",(req:Request,res:Response)=>{
     res.send("Server is running")
 
 })
+
 
 app.use("/api/auth",authRoutes)
 app.use("/api/users",authMiddleware,userRoutes)
