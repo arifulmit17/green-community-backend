@@ -63,6 +63,38 @@ const getIdeaById = async (req: Request, res: Response) => {
   }
 };
 
+
+
+export const getIdeasByUserId = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { userId } = req.params
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: "User ID is required",
+      })
+    }
+
+    const ideas = await ideaService.getIdeasByUserId(userId as string)
+
+    return res.status(200).json({
+      success: true,
+      data: ideas,
+    })
+  } catch (error) {
+    console.error("Get ideas by user error:", error)
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch ideas",
+    })
+  }
+}
+
 const updateIdea = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -136,6 +168,7 @@ export const ideaController = {
   createIdea,
   getAllIdeas,
   getIdeaById,
+  getIdeasByUserId,
   updateIdea,
   deleteIdea,
   updateIdeaStatus,

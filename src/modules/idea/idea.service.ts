@@ -98,6 +98,31 @@ const getIdeaById = async (id: string, userId?: string) => {
   return idea;
 };
 
+
+export const getIdeasByUserId = async (userId: string) => {
+  const ideas = await prisma.idea.findMany({
+    where: {
+      authorId: userId,
+    },
+    include: {
+      author: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+      category: true,
+      votes: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  })
+
+  return ideas
+}
+
 const updateIdea = async (
   id: string,
   userId: string,
@@ -162,6 +187,7 @@ export const ideaService = {
   createIdea,
   getAllIdeas,
   getIdeaById,
+  getIdeasByUserId,
   updateIdea,
   deleteIdea,
   updateIdeaStatus,

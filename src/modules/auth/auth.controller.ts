@@ -34,8 +34,8 @@ const loginUser = async (req: Request, res: Response) => {
     
     res.cookie("token", result.token, {
   httpOnly: true,
-  secure: false, // true in production (https)
-  sameSite: "lax",
+  sameSite: "lax",   // 🔥 change this
+  secure: false,
 })
     res.status(200).json({
       success: true,

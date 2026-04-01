@@ -11,7 +11,7 @@ import cookieParser from "cookie-parser"
 
 
 const app=express();
-
+app.use(express.json())
 app.use(
   cors({
     origin: "http://localhost:4000",
@@ -19,9 +19,14 @@ app.use(
   })
 )
 
+app.use((req, res, next) => {
+  console.log("Raw Cookie Header:", req.headers.cookie)
+  next()
+})
+
 app.use(cookieParser())
 
-app.use(express.json())
+
 
 app.get("/",(req:Request,res:Response)=>{
     res.send("Server is running")

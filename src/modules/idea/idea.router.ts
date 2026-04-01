@@ -10,6 +10,7 @@ router.post("/",authMiddleware, ideaController.createIdea);
 
 
 router.get("/:id",authMiddleware, ideaController.getIdeaById);
+router.get("/user/:userId",authMiddleware, ideaController.getIdeasByUserId);
 
 router.patch("/:id",authMiddleware, ideaController.updateIdea);
 
