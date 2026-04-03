@@ -8,6 +8,7 @@ import { authMiddleware } from './middlewares/authMiddleware';
 import { voteRoutes } from "./modules/vote/vote.router";
 import { feedbackRoutes } from "./modules/feedback/feedback.router";
 import cookieParser from "cookie-parser"
+import { paymentRoutes } from "./modules/payment/payment.router";
 
 
 const app=express();
@@ -40,4 +41,5 @@ app.use("/api/idea",ideaRoutes)
 app.use("/api/categories",categoryRoutes)
 app.use("/api/votes",voteRoutes)
 app.use("/api/feedback", feedbackRoutes);
+app.use("/api/payment", paymentRoutes);
 export default app;
