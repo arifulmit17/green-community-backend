@@ -9,6 +9,7 @@ import { voteRoutes } from "./modules/vote/vote.router";
 import { feedbackRoutes } from "./modules/feedback/feedback.router";
 import cookieParser from "cookie-parser"
 import { paymentRoutes } from "./modules/payment/payment.router";
+import { handleWebhook, stripeWebhook } from "./modules/payment/stripe.webhook";
 
 
 const app=express();
@@ -27,6 +28,16 @@ app.use((req, res, next) => {
 
 app.use(cookieParser())
 
+
+app.post(
+  "/api/webhook",
+  stripeWebhook,
+  handleWebhook
+)
+app.post("/webhook",(req:Request,res:Response)=>{
+  console.log("Received webhook:", req.body)
+  res.status(200).send("Webhook received")
+})
 
 
 app.get("/",(req:Request,res:Response)=>{
