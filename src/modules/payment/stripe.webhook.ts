@@ -1,3 +1,4 @@
+import { prisma } from "../../lib/prisma"
 import { stripe } from "../../utils/stripe"
 import express from "express"
 
@@ -25,15 +26,24 @@ export const handleWebhook = async (req: express.Request, res: express.Response)
   // ✅ Handle events
   if (event.type === "payment_intent.succeeded") {
     const paymentIntent = event.data.object
+    console.log(paymentIntent);
 
     const ideaId = paymentIntent.metadata.ideaId
     const userId = paymentIntent.metadata.userId
 
     console.log("✅ Payment success:", ideaId, userId)
 
-    // 🔥 Save purchase in DB
-    // await prisma.purchase.create({ ... })
+    if (!userId || !ideaId) {
+  throw new Error("Missing userId or ideaId")
+}
+    await prisma.purchase.create({
+    data: {
+      userId,
+      ideaId,
+    },
+  })
   }
+ 
 
   res.json({ received: true })
 }

@@ -5,25 +5,31 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2026-03-25.dahlia",
 })
 
-export const createPaymentIntent = async (req:Request, res:Response) => {
+export const createPaymentIntent = async (req: Request, res: Response) => {
   try {
-    const { amount } = req.body // in cents
+    const userId = req.user?.id
+    const { ideaId, amount } = req.body
+    console.log(ideaId,userId,amount);
+    if (!userId || !ideaId) {
+      return res.status(400).json({
+        message: "Missing userId or ideaId",
+      })
+    }
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: "usd",
-      payment_method_types: ["card"],
+
+      metadata: {
+        userId,
+        ideaId,
+      },
     })
 
     res.json({
-      success: true,
       clientSecret: paymentIntent.client_secret,
     })
   } catch (error) {
-    console.error(error)
-    res.status(500).json({
-      success: false,
-      message: "Payment failed",
-    })
+    res.status(500).json({ error: "Payment failed" })
   }
 }
