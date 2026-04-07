@@ -19,6 +19,7 @@ model User {
   email       String   @unique
   password    String
   role        Role     @default(MEMBER)
+  isActive    Boolean  @default(true)
 
   ideas       Idea[]
   comments    Comment[]
@@ -50,6 +51,7 @@ model Idea {
   solution        String
   description     String
   image           String?
+  isFeatured       Boolean       @default(false)
 
   isPaid          Boolean       @default(false)
   price           Float?

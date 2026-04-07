@@ -22,11 +22,13 @@ app.post(
 app.use(express.json())
 app.use(
   cors({
-    origin: "http://localhost:4000",
-    credentials: true, // important if using cookies
+    origin: [
+      "https://green-community-frontend.vercel.app",
+      "http://localhost:4000",
+    ],
+    credentials: true,
   })
 )
-
 app.use((req, res, next) => {
   console.log("Raw Cookie Header:", req.headers.cookie)
   next()

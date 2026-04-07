@@ -18,7 +18,7 @@ export const handleWebhook = async (req: express.Request, res: express.Response)
       sig,
       process.env.STRIPE_WEBHOOK_SECRET!
     )
-  } catch (err) {
+  } catch (err: any) {
     console.log("Webhook error:", err.message)
     return res.status(400).send(`Webhook Error`)
   }

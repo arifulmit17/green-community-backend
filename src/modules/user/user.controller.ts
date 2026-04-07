@@ -1,6 +1,7 @@
 
 import type { Request, Response } from "express";
 import { userService } from "./user.service";
+import { prisma } from "../../lib/prisma";
 
 
 // GET ALL
@@ -80,3 +81,20 @@ export const deleteUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const updateUserStatus = async (req: Request, res: Response) => {
+  const { id } = req.params as { id: string };
+  const { status } = req.body as { status: boolean };
+
+  const user = await prisma.user.update({
+    where: { id },
+    data: { status },
+  })
+
+  
+
+  res.json({
+    success: true,
+    data: user,
+  })
+}
