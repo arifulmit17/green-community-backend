@@ -59,10 +59,10 @@ model Idea {
   status          IdeaStatus    @default(UNDER_REVIEW)
 
   authorId        String
-  author          User          @relation(fields: [authorId], references: [id])
+  author          User          @relation(fields: [authorId], references: [id],onDelete: Cascade)
 
   categoryId      String
-  category        Category      @relation(fields: [categoryId], references: [id])
+  category        Category      @relation(fields: [categoryId], references: [id],onDelete: Cascade)
 
   comments        Comment[]
   votes           Vote[]
@@ -100,8 +100,8 @@ model Vote {
 
   type      VoteType
 
-  user      User     @relation(fields: [userId], references: [id])
-  idea      Idea     @relation(fields: [ideaId], references: [id])
+  user      User     @relation(fields: [userId], references: [id] ,onDelete: Cascade)
+  idea      Idea     @relation(fields: [ideaId], references: [id] ,onDelete: Cascade)
 
   @@unique([userId, ideaId]) // prevents multiple votes
 }
@@ -118,7 +118,7 @@ model Comment {
   user        User       @relation(fields: [userId], references: [id])
   idea        Idea       @relation(fields: [ideaId], references: [id])
 
-  parent      Comment?   @relation("CommentReplies", fields: [parentId], references: [id])
+  parent      Comment?   @relation("CommentReplies", fields: [parentId], references: [id],onDelete: Cascade)
   replies     Comment[]  @relation("CommentReplies")
 
   createdAt   DateTime   @default(now())
@@ -130,7 +130,7 @@ model Feedback {
   ideaId    String   @unique
   message   String
 
-  idea      Idea     @relation(fields: [ideaId], references: [id])
+  idea      Idea     @relation(fields: [ideaId], references: [id],onDelete: Cascade)
 
   createdAt DateTime @default(now())
 }
@@ -141,8 +141,8 @@ model Purchase {
   userId    String
   ideaId    String
 
-  user      User     @relation(fields: [userId], references: [id])
-  idea      Idea     @relation(fields: [ideaId], references: [id])
+  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
+  idea      Idea     @relation(fields: [ideaId], references: [id],onDelete: Cascade)
 
   createdAt DateTime @default(now())
 

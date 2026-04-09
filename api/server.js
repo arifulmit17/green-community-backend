@@ -251,6 +251,7 @@ var getAllUsers = async () => {
       name: true,
       email: true,
       role: true,
+      isActive: true,
       createdAt: true
     }
   });
@@ -264,6 +265,7 @@ var getUserById = async (id) => {
       name: true,
       email: true,
       role: true,
+      isActive: true,
       createdAt: true
     }
   });
@@ -363,16 +365,33 @@ var deleteUser2 = async (req, res) => {
   }
 };
 var updateUserStatus = async (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
-  const user = await prisma.user.update({
-    where: { id },
-    data: { status }
-  });
-  res.json({
-    success: true,
-    data: user
-  });
+  try {
+    const { id } = req.params;
+    const { isActive } = req.body;
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID"
+      });
+    }
+    const parsedIsActive = typeof isActive === "boolean" ? isActive : isActive === "true";
+    console.log("parsedIsActive:", parsedIsActive);
+    const user = await prisma.user.update({
+      where: { id },
+      data: { isActive: parsedIsActive }
+    });
+    console.log("user status", user);
+    return res.json({
+      success: true,
+      data: user
+    });
+  } catch (error) {
+    console.error("Update user status error:", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
 };
 
 // src/modules/user/user.router.ts

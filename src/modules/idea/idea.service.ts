@@ -153,6 +153,10 @@ const updateIdea = async (
 };
 
 const deleteIdea = async (id: string, userId: string) => {
+  // await prisma.vote.deleteMany({
+  // where: { ideaId: id },
+  // })
+
   const idea = await prisma.idea.findUnique({
     where: { id },
   });
