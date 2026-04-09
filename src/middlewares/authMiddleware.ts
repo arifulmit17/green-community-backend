@@ -2,14 +2,14 @@ import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 
-export const authMiddleware = (
+export const  authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     console.log("Cookies:", req.cookies)
-    const token =req.cookies?.token
+    const token =await req.cookies?.token
     console.log("token:", token);
 
     if (!token) {

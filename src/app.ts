@@ -14,6 +14,7 @@ import { purchaseRoutes } from "./modules/purchase/purchase.router";
 
 
 const app=express();
+app.use(cookieParser())
 app.post(
   "/api/webhook",
   stripeWebhook,
@@ -22,10 +23,8 @@ app.post(
 app.use(express.json())
 app.use(
   cors({
-    origin: [
-      "https://green-community-frontend.vercel.app",
-      "http://localhost:4000",
-    ],
+    origin: "http://localhost:4000",
+    // origin: "https://green-community-frontend.vercel.app",
     credentials: true,
   })
 )
@@ -34,7 +33,6 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use(cookieParser())
 
 
 

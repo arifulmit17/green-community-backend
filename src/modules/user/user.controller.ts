@@ -83,18 +83,41 @@ export const deleteUser = async (req: Request, res: Response) => {
 };
 
 export const updateUserStatus = async (req: Request, res: Response) => {
-  const { id } = req.params as { id: string };
-  const { status } = req.body as { status: boolean };
+  try {
+    const { id } = req.params as { id: string }
+    const { isActive } = req.body
 
-  const user = await prisma.user.update({
-    where: { id },
-    data: { status },
-  })
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID",
+      })
+    }
 
-  
+    // 🔥 ensure boolean
+    const parsedIsActive =
+      typeof isActive === "boolean"
+        ? isActive
+        : isActive === "true"
 
-  res.json({
-    success: true,
-    data: user,
-  })
+    console.log("parsedIsActive:", parsedIsActive)
+
+    const user = await prisma.user.update({
+      where: { id },
+      data: { isActive: parsedIsActive },
+    })
+    console.log("user status",user);
+
+    return res.json({
+      success: true,
+      data: user,
+    })
+  } catch (error: any) {
+    console.error("Update user status error:", error)
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    })
+  }
 }

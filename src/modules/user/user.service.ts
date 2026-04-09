@@ -12,6 +12,7 @@ const getAllUsers = async () => {
       name: true,
       email: true,
       role: true,
+      isActive: true,
       createdAt: true,
     },
   });
@@ -28,6 +29,7 @@ const getUserById = async (id: string) => {
       name: true,
       email: true,
       role: true,
+      isActive: true,
       createdAt: true,
     },
   });
