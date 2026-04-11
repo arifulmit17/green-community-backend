@@ -25,7 +25,7 @@ var config = {
   "clientVersion": "7.5.0",
   "engineVersion": "280c870be64f457428992c43c1f6d557fab6e29e",
   "activeProvider": "postgresql",
-  "inlineSchema": '// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Get a free hosted Postgres database in seconds: `npx create-db`\n\ngenerator client {\n  provider = "prisma-client"\n  output   = "../generated/prisma"\n}\n\ndatasource db {\n  provider = "postgresql"\n}\n\nmodel User {\n  id       String  @id @default(cuid())\n  name     String\n  email    String  @unique\n  password String\n  role     Role    @default(MEMBER)\n  isActive Boolean @default(true)\n\n  ideas     Idea[]\n  comments  Comment[]\n  votes     Vote[]\n  purchases Purchase[]\n\n  createdAt DateTime @default(now())\n}\n\nenum Role {\n  MEMBER\n  ADMIN\n}\n\nmodel Category {\n  id   String @id @default(cuid())\n  name String @unique\n\n  ideas Idea[]\n}\n\nmodel Idea {\n  id          String  @id @default(cuid())\n  title       String\n  problem     String\n  solution    String\n  description String\n  image       String?\n  isFeatured  Boolean @default(false)\n\n  isPaid Boolean @default(false)\n  price  Float?\n\n  status IdeaStatus @default(UNDER_REVIEW)\n\n  authorId String\n  author   User   @relation(fields: [authorId], references: [id])\n\n  categoryId String\n  category   Category @relation(fields: [categoryId], references: [id])\n\n  comments  Comment[]\n  votes     Vote[]\n  purchases Purchase[]\n\n  feedback Feedback?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([title])\n  @@index([categoryId])\n}\n\nenum IdeaStatus {\n  UNDER_REVIEW\n  APPROVED\n  REJECTED\n  DRAFT\n}\n\nenum VoteType {\n  UP\n  DOWN\n}\n\nmodel Vote {\n  id String @id @default(cuid())\n\n  userId String\n  ideaId String\n\n  type VoteType\n\n  user User @relation(fields: [userId], references: [id])\n  idea Idea @relation(fields: [ideaId], references: [id])\n\n  @@unique([userId, ideaId]) // prevents multiple votes\n}\n\nmodel Comment {\n  id      String @id @default(cuid())\n  content String\n\n  userId String\n  ideaId String\n\n  parentId String? // for nested comments\n\n  user User @relation(fields: [userId], references: [id])\n  idea Idea @relation(fields: [ideaId], references: [id])\n\n  parent  Comment?  @relation("CommentReplies", fields: [parentId], references: [id])\n  replies Comment[] @relation("CommentReplies")\n\n  createdAt DateTime @default(now())\n}\n\nmodel Feedback {\n  id String @id @default(cuid())\n\n  ideaId  String @unique\n  message String\n\n  idea Idea @relation(fields: [ideaId], references: [id])\n\n  createdAt DateTime @default(now())\n}\n\nmodel Purchase {\n  id String @id @default(cuid())\n\n  userId String\n  ideaId String\n\n  user User @relation(fields: [userId], references: [id])\n  idea Idea @relation(fields: [ideaId], references: [id])\n\n  createdAt DateTime @default(now())\n\n  @@unique([userId, ideaId]) // user buys once\n}\n',
+  "inlineSchema": '// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Get a free hosted Postgres database in seconds: `npx create-db`\n\ngenerator client {\n  provider = "prisma-client"\n  output   = "../generated/prisma"\n}\n\ndatasource db {\n  provider = "postgresql"\n}\n\nmodel User {\n  id       String  @id @default(cuid())\n  name     String\n  email    String  @unique\n  password String\n  role     Role    @default(MEMBER)\n  isActive Boolean @default(true)\n\n  ideas     Idea[]\n  comments  Comment[]\n  votes     Vote[]\n  purchases Purchase[]\n\n  createdAt DateTime @default(now())\n}\n\nenum Role {\n  MEMBER\n  ADMIN\n}\n\nmodel Category {\n  id   String @id @default(cuid())\n  name String @unique\n\n  ideas Idea[]\n}\n\nmodel Idea {\n  id          String  @id @default(cuid())\n  title       String\n  problem     String\n  solution    String\n  description String\n  image       String?\n  isFeatured  Boolean @default(false)\n\n  isPaid Boolean @default(false)\n  price  Float?\n\n  status IdeaStatus @default(UNDER_REVIEW)\n\n  authorId String\n  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)\n\n  categoryId String\n  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)\n\n  comments  Comment[]\n  votes     Vote[]\n  purchases Purchase[]\n\n  feedback Feedback?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([title])\n  @@index([categoryId])\n}\n\nenum IdeaStatus {\n  UNDER_REVIEW\n  APPROVED\n  REJECTED\n  DRAFT\n}\n\nenum VoteType {\n  UP\n  DOWN\n}\n\nmodel Vote {\n  id String @id @default(cuid())\n\n  userId String\n  ideaId String\n\n  type VoteType\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n  idea Idea @relation(fields: [ideaId], references: [id], onDelete: Cascade)\n\n  @@unique([userId, ideaId]) // prevents multiple votes\n}\n\nmodel Comment {\n  id      String @id @default(cuid())\n  content String\n\n  userId String\n  ideaId String\n\n  parentId String? // for nested comments\n\n  user User @relation(fields: [userId], references: [id])\n  idea Idea @relation(fields: [ideaId], references: [id])\n\n  parent  Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)\n  replies Comment[] @relation("CommentReplies")\n\n  createdAt DateTime @default(now())\n}\n\nmodel Feedback {\n  id String @id @default(cuid())\n\n  ideaId  String @unique\n  message String\n\n  idea Idea @relation(fields: [ideaId], references: [id], onDelete: Cascade)\n\n  createdAt DateTime @default(now())\n}\n\nmodel Purchase {\n  id String @id @default(cuid())\n\n  userId String\n  ideaId String\n\n  user User @relation(fields: [userId], references: [id], onDelete: Cascade)\n  idea Idea @relation(fields: [ideaId], references: [id], onDelete: Cascade)\n\n  createdAt DateTime @default(now())\n\n  @@unique([userId, ideaId]) // user buys once\n}\n',
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -387,7 +387,7 @@ var updateUserStatus = async (req, res) => {
     });
   } catch (error) {
     console.error("Update user status error:", error);
-    return res.status(500).json({
+    return res.status(400).json({
       success: false,
       message: error.message
     });
@@ -624,7 +624,7 @@ var getIdeasByUserId2 = async (req, res) => {
     });
   } catch (error) {
     console.error("Get ideas by user error:", error);
-    return res.status(500).json({
+    return res.status(400).json({
       success: false,
       message: "Failed to fetch ideas"
     });
@@ -1169,7 +1169,7 @@ var createPaymentIntent = async (req, res) => {
       clientSecret: paymentIntent.client_secret
     });
   } catch (error) {
-    res.status(500).json({ error: "Payment failed" });
+    res.status(400).json({ error: "Payment failed" });
   }
 };
 
@@ -1312,7 +1312,7 @@ var getMyPurchases = async (req, res) => {
       data: result
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
       message: error.message
     });
@@ -1334,7 +1334,7 @@ var checkPurchase = async (req, res) => {
       purchased
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
       message: error.message
     });
