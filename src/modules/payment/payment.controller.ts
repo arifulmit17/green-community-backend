@@ -30,6 +30,6 @@ export const createPaymentIntent = async (req: Request, res: Response) => {
       clientSecret: paymentIntent.client_secret,
     })
   } catch (error) {
-    res.status(500).json({ error: "Payment failed" })
+    res.status(400).json({ error: "Payment failed" })
   }
 }
