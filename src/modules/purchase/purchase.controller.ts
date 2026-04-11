@@ -56,7 +56,7 @@ export const getMyPurchases = async (req: Request, res: Response) => {
 export const checkPurchase = async (req: Request, res: Response) => {
   try {
     const userId = req.user?.id
-    const { ideaId } = req.params
+    const  {ideaId}  = req.params
 
     if (!userId) {
   return res.status(401).json({
@@ -66,7 +66,6 @@ export const checkPurchase = async (req: Request, res: Response) => {
 }
 
     const purchased = await purchaseService.hasPurchased(userId, ideaId as string)
-
     res.json({
       success: true,
       purchased,

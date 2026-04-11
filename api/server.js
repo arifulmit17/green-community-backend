@@ -481,6 +481,7 @@ var getIdeaById = async (id, userId) => {
       return {
         id: idea.id,
         title: idea.title,
+        price: idea.price,
         message: "This is a paid idea. Please purchase to view details."
       };
     }
