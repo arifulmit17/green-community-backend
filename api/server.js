@@ -447,7 +447,8 @@ var getAllIdeas = async (query) => {
         select: { id: true, name: true }
       },
       category: true,
-      votes: true
+      votes: true,
+      purchases: true
     },
     orderBy: {
       createdAt: "desc"
@@ -473,10 +474,12 @@ var getIdeaById = async (id, userId) => {
   if (!idea) {
     throw new Error("Idea not found");
   }
+  console.log(userId);
   if (idea.isPaid) {
     const purchased = idea.purchases.find(
       (p) => p.userId === userId
     );
+    console.log("purchased idea", purchased);
     if (!purchased) {
       return {
         id: idea.id,

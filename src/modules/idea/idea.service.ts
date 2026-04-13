@@ -51,6 +51,7 @@ const getAllIdeas = async (query: any) => {
       },
       category: true,
       votes: true,
+      purchases:true,
     },
     orderBy: {
       createdAt: "desc",
@@ -79,13 +80,13 @@ const getIdeaById = async (id: string, userId?: string) => {
   if (!idea) {
     throw new Error("Idea not found");
   }
-
+  console.log(userId);
   // 🔐 Paid idea protection
   if (idea.isPaid) {
     const purchased = idea.purchases.find(
       (p) => p.userId === userId
     );
-
+    console.log("purchased idea",purchased);
     if (!purchased) {
       return {
         id: idea.id,
